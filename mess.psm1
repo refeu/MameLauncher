@@ -106,7 +106,7 @@ function InvokeMame([State] $state) {
         $pArgs.ArgumentList = TransformParameters $state.ArgsToMame
     }
 
-    Start-Process (Join-Path ([Settings]::MameDir) $state.MameToInvoke) @pArgs -Wait
+    Start-Process (Join-Path ([Settings]::MameDir) $state.MameToInvoke) @pArgs -Wait -NoNewWindow
 }
 
 Export-ModuleMember InvokeMame
