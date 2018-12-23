@@ -161,7 +161,7 @@ function GetListDescriptionFilename([string] $description) {
 
 function GetLinkForSoftwareList([string] $romName, [string] $listName) {
     [xml] $xmlList = Get-Content -LiteralPath (Join-Path ([Consts]::HashDirectory) "$listName.xml")
-    return ($xmlList.DocumentElement.software | Where-Object { ([string] $_.cloneof -eq "") -and (GetListDescriptionFilename $_.description) -eq $romName })[0].name
+    return ($xmlList.DocumentElement.software | Where-Object { (GetListDescriptionFilename $_.description) -eq $romName }).name
 }
 
 function FindRomType([string] $romPath) {
