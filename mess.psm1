@@ -12,6 +12,7 @@ class Settings {
         vic10 = "vic10";
         scv = "scv";
         supracan = "supracan";
+        mpt02 = "studio2";
     }
 
     static [hashtable] $InferSwitchesSystems = @{
@@ -50,6 +51,8 @@ class Settings {
             Diskettes = "-flop1";
         }
     }
+
+    static [string] $DummyMachines = "gnw";
 }
 
 class Consts {        
@@ -106,7 +109,10 @@ function InvokeMame([State] $state) {
         $pArgs.ArgumentList = TransformParameters $state.ArgsToMame
     }
 
-    Start-Process (Join-Path ([Settings]::MameDir) $state.MameToInvoke) @pArgs -Wait -NoNewWindow
+    [string] $previousLocation = Get-Location
+    Set-Location ([Settings]::MameDir)
+    Start-Process (Join-Path ([Settings]::MameDir) $state.MameToInvoke) -Wait -NoNewWindow @pArgs
+    Set-Location $previousLocation
 }
 
 Export-ModuleMember InvokeMame
@@ -201,9 +207,17 @@ function InitializeInferSwitches([State] $state) {
 Export-ModuleMember InitializeInferSwitches
 
 function InitializeSpecialSystems([State] $state) {
+    [string] $system = $state.GetSystem()
+
+    if ([Settings]::DummyMachines.Contains($system)) {
+        $state.ArgsToMame = $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+        $state.RomArgIdx = 0
+        return @()
+    }
+
     [string] $romType = $state.ArgsToMame[1]
     
-    switch ($state.GetSystem()) {
+    switch ($system) {
         "a2600" {
             if ($romType -eq "-cass") {
                 $state.ArgsToMame = ("a2600", "-cart", "scharger") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
