@@ -4,7 +4,7 @@ class Settings {
     static [string] $MameDir = "D:\Emulators\Mame64"
     static [string] $TemporaryRomsDirectory = "D:\Emulators\Mame64\roms"
     static [string] $VersionFilename = "version.txt"
-    static [string] $CybikoBaseImage = "R:\Others\MAME Non Arcade Software\cybiko\cybiko.bin"
+    static [string] $CybikoBaseImage = "R:\MAME Assets\Software\cybiko\cybiko.bin"
     
     static [hashtable] $SoftwareLists = @{
         plus4 = "plus4_cart";

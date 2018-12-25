@@ -1,7 +1,7 @@
 @echo off
 pushd "%~dp0"
 set nvram=C:\Users\Heads\OneDrive\SAVEDG~1\Mess\nvram
-set romPath="roms;R:\Arcade\MAME Roms\Others;R:\Others\MAME Assets\MAME Devices;R:\Others\MAME Non Arcade Software;R:\Others\MAME Non Arcade System Clones"
+set romPath="roms;R:\Arcade\MAME Roms\Others;R:\MAME Assets\Devices;R:\MAME Assets\Software;R:\MAME Assets\Non Arcade System Clones"
 
 if [%1]==[gnw] goto :callMessWithDummyMachineArg
 if [%1]==[a2600] goto :a2600
