@@ -1,12 +1,12 @@
-class Settings {
-    static [string] $MameBaseFileName = "mame64"
-    static [string] $StateDirectoryBase = "C:\Users\Heads\OneDrive\SAVEDG~1\Mess\sta"    
-    static [string] $MameDir = "D:\Emulators\Mame64"
-    static [string] $TemporaryRomsDirectory = "D:\Emulators\Mame64\roms"
-    static [string] $VersionFilename = "version.txt"
-    static [string] $CybikoBaseImage = "R:\MAME Assets\Software\cybiko\cybiko.bin"
+[hashtable] $Settings = @{
+    MameBaseFileName = "mame64"
+    StateDirectoryBase = "C:\Users\Heads\OneDrive\SAVEDG~1\Mess\sta"    
+    MameDir = "D:\Emulators\Mame64"
+    TemporaryRomsDirectory = "D:\Emulators\Mame64\roms"
+    VersionFilename = "version.txt"
+    CybikoBaseImage = "R:\MAME Assets\Software\cybiko\cybiko.bin"
     
-    static [hashtable] $SoftwareLists = @{
+    SoftwareLists = @{
         plus4 = "plus4_cart";
         plus4p = "plus4_cart";
         vic10 = "vic10";
@@ -15,7 +15,7 @@ class Settings {
         mpt02 = "studio2";
     }
 
-    static [hashtable] $InferSwitchesSystems = @{
+    InferSwitchesSystems = @{
         a2600 = @{
             Cartridges = "-cart";
             Cassettes = "-cass";
@@ -52,22 +52,34 @@ class Settings {
         }
     }
 
-    static [string] $DummyMachines = "gnw";
+    DummyMachines = "gnw", "hh";
 }
 
 class Consts {        
     static [string[]] $InvalidFilenameChars = '<', '>', '"', '\\', '|', '?', '*'
-    static [string] $MameFileName = "$([Settings]::MameBaseFileName).exe"
-    static [string] $HashDirectory = (Join-Path ([Settings]::MameDir) "hash")
-    static [string] $MameSpecificVersionsFolder = (Join-Path ([Settings]::StateDirectoryBase) "Versions")
-    static [string] $DefaultStaFolder = (Join-Path ([Settings]::StateDirectoryBase) "Default")
-    static [string] $ImgTool = (Join-Path ([Settings]::MameDir) "imgtool.exe")
+    static [string] $MameFileName
+    static [string] $HashDirectory
+    static [string] $MameSpecificVersionsFolder
+    static [string] $DefaultStaFolder
+    static [string] $ImgTool
+
+    static [void] Initialize([hashtable] $Settings) {
+        [Consts]::MameFileName = "$($Settings.MameBaseFileName).exe"
+        [Consts]::HashDirectory = (Join-Path $Settings.MameDir "hash")
+        [Consts]::MameSpecificVersionsFolder = (Join-Path $Settings.StateDirectoryBase "Versions")
+        [Consts]::DefaultStaFolder = (Join-Path $Settings.StateDirectoryBase "Default")
+        [Consts]::ImgTool = (Join-Path $Settings.MameDir "imgtool.exe")
+    }
 }
 
+[Consts]::Initialize($Settings)
+
 class State {        
+    static [string] $StateDirectoryBase
+    
     [string] $MameToInvoke = [Consts]::MameFileName
     [string[]] $ArgsToMame
-    [int] $RomArgIdx = 2    
+    [int] $RomArgIdx = 2
 
     [string] GetRomPath() {
         return $this.ArgsToMame[$this.RomArgIdx]
@@ -86,9 +98,15 @@ class State {
     }
 
     [string] GetGameStateFolder() {
-        return Join-Path ([Settings]::StateDirectoryBase) "$($this.GetRomName()).$($this.GetSystem())"
+        return Join-Path [State]::StateDirectoryBase "$($this.GetRomName()).$($this.GetSystem())"
+    }
+
+    static [void] Initialize([hashtable] $Settings) {
+        [State]::StateDirectoryBase = $Settings.StateDirectoryBase
     }
 }
+
+[State]::Initialize($Settings)
 
 function PutInQuotesIfNeeded([string] $str) {
     if ($str.Contains(" ") -and -not $str.StartsWith('"')) {
@@ -110,8 +128,8 @@ function InvokeMame([State] $state) {
     }
 
     [string] $previousLocation = Get-Location
-    Set-Location ([Settings]::MameDir)
-    Start-Process (Join-Path ([Settings]::MameDir) $state.MameToInvoke) -Wait -NoNewWindow @pArgs
+    Set-Location $Settings.MameDir
+    Start-Process (Join-Path $Settings.MameDir $state.MameToInvoke) -Wait -NoNewWindow @pArgs
     Set-Location $previousLocation
 }
 
@@ -126,7 +144,7 @@ function FileExt([string] $fileName) {
 }
 
 function GetMameSpecificVersionFile([int] $version) {
-    Join-Path ([Consts]::MameSpecificVersionsFolder) "$([Settings]::MameBaseFileName).$version.exe"
+    Join-Path ([Consts]::MameSpecificVersionsFolder) "$($Settings.MameBaseFileName).$version.exe"
 }
 
 function CreateSymbolicLink([string] $link, [string] $target) {
@@ -144,8 +162,8 @@ function CreateDir([string] $dirName) {
 }
 
 function SaveCurrentMameVersion([string] $gameStateFolder) {
-    [string] $currentMameVersion = [int] (([double] (Get-Item (Join-Path [Settings]::MameDir [Consts]::MameFileName)).VersionInfo.ProductVersion) * 1000)
-    Set-Content -LiteralPath $(Join-Path $gameStateFolder ([Settings]::VersionFilename)) $currentMameVersion
+    [string] $currentMameVersion = [int] (([double] (Get-Item (Join-Path $Settings.MameDir [Consts]::MameFileName)).VersionInfo.ProductVersion) * 1000)
+    Set-Content -LiteralPath $(Join-Path $gameStateFolder $Settings.VersionFilename) $currentMameVersion
     [string] $mameSpecificFile = GetMameSpecificVersionFile $currentMameVersion
 
     if (!(Test-Path -LiteralPath $mameSpecificFile -PathType Leaf)) {
@@ -191,11 +209,11 @@ function InitializeInferSwitches([State] $state) {
     
     [string] $system = $state.GetSystem()
 
-    if (!([Settings]::InferSwitchesSystems.ContainsKey($system))) {
+    if (! $Settings.InferSwitchesSystems.ContainsKey($system)) {
         return
     }    
     
-    [hashtable] $inferSwitches = [Settings]::InferSwitchesSystems[$system]
+    [hashtable] $inferSwitches = $Settings.InferSwitchesSystems[$system]
     [string] $romType = FindRomType $state.ArgsToMame[1]    
 
     if ($inferSwitches.ContainsKey($romType)) {
@@ -209,7 +227,7 @@ Export-ModuleMember InitializeInferSwitches
 function InitializeSpecialSystems([State] $state) {
     [string] $system = $state.GetSystem()
 
-    if ([Settings]::DummyMachines.Contains($system)) {
+    if ($Settings.DummyMachines.Contains($system)) {
         $state.ArgsToMame = $state.ArgsToMame[1..($state.ArgsToMame.Length)]
         $state.RomArgIdx = 0
         return @()
@@ -229,8 +247,8 @@ function InitializeSpecialSystems([State] $state) {
         "cybikov2" {
             if ((FileExt $state.GetRomPath()) -eq ".app") {
                 # We need to invoke the imgtool on the cybiko base image
-                [string] $destImg = Join-Path ([Settings]::TemporaryRomsDirectory) "$($state.GetRomName()).bin"
-                Copy-Item ([Settings]::CybikoBaseImage) $destImg
+                [string] $destImg = Join-Path $Settings.TemporaryRomsDirectory "$($state.GetRomName()).bin"
+                Copy-Item $Settings.CybikoBaseImage $destImg
                 Start-Process ([Consts]::ImgTool) -ArgumentList "put", "cybiko", (PutInQuotesIfNeeded $destImg), (PutInQuotesIfNeeded $state.GetRomPath()), "game.app" -Wait -NoNewWindow
                 $state.SetRomPath($destImg)
                 return @($destImg)
@@ -279,7 +297,7 @@ function InitializeSpecialSystems([State] $state) {
 Export-ModuleMember InitializeSpecialSystems
 
 function InitializeSoftwareListRom([State] $state) {
-    if (!([Settings]::SoftwareLists.ContainsKey($state.GetSystem()))) {
+    if (! $Settings.SoftwareLists.ContainsKey($state.GetSystem())) {
         return ""
     }
     
@@ -289,7 +307,7 @@ function InitializeSoftwareListRom([State] $state) {
     }
 
     $state.romArgIdx = 1
-    $softwareLists = [Settings]::SoftwareLists[$state.GetSystem()]
+    $softwareLists = $Settings.SoftwareLists[$state.GetSystem()]
 
     if ($softwareLists -is [hashtable]) {
         $softwareLists = @($softwareLists[(FindRomType $state.GetRomPath())])
@@ -301,7 +319,7 @@ function InitializeSoftwareListRom([State] $state) {
         [string] $romLinkName = GetLinkForSoftwareList $state.GetRomName() $listName
 
         if ($romLinkName -ne "") {
-            CreateSymbolicLink (Join-Path ([Settings]::TemporaryRomsDirectory) "$romLinkName.zip") $state.GetRomPath()
+            CreateSymbolicLink (Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip") $state.GetRomPath()
             $state.SetRomPath($romLinkName)
             return $romLinkName
         }
@@ -318,7 +336,7 @@ function InitializeStateDirectory([State] $state) {
 
     if (Test-Path -LiteralPath $gameStateFolder -PathType Container) {
         $stateDirectory = $gameStateFolder
-        [string] $versionFilePath = Join-Path $gameStateFolder ([Settings]::VersionFilename)
+        [string] $versionFilePath = Join-Path $gameStateFolder $Settings.VersionFilename
         
         if (Test-Path -LiteralPath $versionFilePath -PathType Leaf) {
             [int] $versionToUse = [int] (Get-Content -LiteralPath $versionFilePath -ReadCount 1)
@@ -326,7 +344,7 @@ function InitializeStateDirectory([State] $state) {
     
             if (Test-Path -LiteralPath $mameSpecificFile -PathType Leaf) {
                 $state.MameToInvoke = (Split-Path $mameSpecificFile -Leaf)
-                CreateSymbolicLink $state.MameToInvoke (Join-Path [Settings]::MameDir $mameSpecificFile)
+                CreateSymbolicLink $state.MameToInvoke (Join-Path $Settings.MameDir $mameSpecificFile)
             } else {
                 SaveCurrentMameVersion $gameStateFolder
             }
@@ -370,7 +388,7 @@ Export-ModuleMember InitializeLaunchboxRom
 
 function FinalizeStateDirectory([State] $state, [string] $usedStateFolder) {
     if ($state.MameToInvoke -ne ([Consts]::MameFileName)) {
-        Remove-Item (Join-Path [Settings]::MameDir $state.MameToInvoke)
+        Remove-Item (Join-Path $Settings.MameDir $state.MameToInvoke)
     }
     
     if ($usedStateFolder -eq ([Consts]::DefaultStaFolder)) {
@@ -389,7 +407,7 @@ Export-ModuleMember FinalizeStateDirectory
 
 function FinalizeSoftwareListRom([string] $romLinkName) {
     if ($romLinkName -ne "") {
-        Remove-Item (Join-Path ([Settings]::TemporaryRomsDirectory) "$romLinkName.zip")
+        Remove-Item (Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip")
     }
 }
 
