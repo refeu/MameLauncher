@@ -4,6 +4,7 @@ set nvram=C:\Users\Heads\OneDrive\SAVEDG~1\Mess\nvram
 set romPath="roms;R:\Arcade\MAME Roms\Others;R:\MAME Assets\Devices;R:\MAME Assets\Software;R:\MAME Assets\Non Arcade System Clones"
 
 if [%1]==[gnw] goto :callMessWithDummyMachineArg
+if [%1]==[hh] goto :callMessWithDummyMachineArg
 if [%1]==[a2600] goto :a2600
 if [%1]==[a7800] goto :a7800
 if [%1]==[coleco] goto :coleco

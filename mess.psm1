@@ -52,7 +52,7 @@
         }
     }
 
-    DummyMachines = "gnw", "hh";
+    DummyMachines = "gnw", "hh"
 }
 
 class Consts {        
@@ -98,7 +98,7 @@ class State {
     }
 
     [string] GetGameStateFolder() {
-        return Join-Path [State]::StateDirectoryBase "$($this.GetRomName()).$($this.GetSystem())"
+        return Join-Path ([State]::StateDirectoryBase) "$($this.GetRomName()).$($this.GetSystem())"
     }
 
     static [void] Initialize([hashtable] $Settings) {
