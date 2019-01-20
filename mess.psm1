@@ -344,7 +344,7 @@ function InitializeStateDirectory([State] $state) {
     
             if (Test-Path -LiteralPath $mameSpecificFile -PathType Leaf) {
                 $state.MameToInvoke = (Split-Path $mameSpecificFile -Leaf)
-                CreateSymbolicLink $state.MameToInvoke (Join-Path $Settings.MameDir $mameSpecificFile)
+                CreateSymbolicLink (Join-Path $Settings.MameDir $state.MameToInvoke) $mameSpecificFile
             } else {
                 SaveCurrentMameVersion $gameStateFolder
             }
