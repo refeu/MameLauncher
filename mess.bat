@@ -1,10 +1,9 @@
 @echo off
-pushd "%~dp0"
 set nvram=C:\Users\Heads\OneDrive\SAVEDG~1\Mess\nvram
 set romPath="roms;R:\Arcade\MAME Roms\Others;R:\MAME Assets\Devices;R:\MAME Assets\Software;R:\MAME Assets\Non Arcade System Clones"
 
 if [%1]==[gnw] goto :callMessWithDummyMachineArg
-if [%1]==[hh] goto :callMessWithDummyMachineArg
+if [%1]==[electronic] goto :callMessWithDummyMachineArg
 if [%1]==[a2600] goto :a2600
 if [%1]==[a7800] goto :a7800
 if [%1]==[coleco] goto :coleco
@@ -20,13 +19,17 @@ if [%1]==[vsmile] goto :vsmile
 if [%1]==[svision] goto :svision
 
 :callMess
-powershell -File .\mess.ps1 %* -skip_gameinfo -nowindow -rompath %romPath% -nvram_directory %nvram%
+pushd "%~dp0"
+powershell -File .\mess.ps1 %* -skip_gameinfo -rompath %romPath% -nvram_directory %nvram%
+popd
 goto :end
 
 :callMessWithDummyMachineArg
+pushd "%~dp0"
 set dir="%~dp2"
 set rom=%~n2
-powershell -File .\mess.ps1 %1 %rom% -skip_gameinfo -nowindow -rompath %romPath%;%dir% -nvram_directory %nvram%
+powershell -File .\mess.ps1 %1 %rom% -skip_gameinfo -rompath %romPath%;%dir% -nvram_directory %nvram%
+popd
 goto :end
 
 :a2600
@@ -230,17 +233,33 @@ if not %rom:(Jpn=%==%rom% (
 goto :callMess
 
 :vsmile
+
+if [%3]==[] goto :callMess
+
+set extension=%~x3
 set rom="%~nx3"
 
 if not %rom:(Ger=%==%rom% (
-	%0 vsmileg %2 %3
+	if "%extension%"==".zip" (
+		%0 vsmileg %3
+	) else (
+		%0 vsmileg %2 %3
+	)
 )
 
 if %rom:(USA=%==%rom% (
-	%0 vsmilef %2 %3
+	if "%extension%"==".zip" (
+		%0 vsmilef %3
+	) else (
+		%0 vsmilef %2 %3
+	)
 )
 
-goto :callMess
+if "%extension%"==".zip" (
+	%0 vsmile %3
+) else (
+	goto :callMess
+)
 
 :svision
 set rom="%~nx3"
@@ -252,4 +271,3 @@ if not %rom:(Euro=%==%rom% (
 %0 svisionn %2 %3
 
 :end
-popd

@@ -13,6 +13,9 @@
         scv = "scv";
         supracan = "supracan";
         mpt02 = "studio2";
+        vsmile = "vsmile_cart", "vsmilem_cart";
+        vsmileg = "vsmile_cart", "vsmilem_cart";
+        vsmilef = "vsmile_cart", "vsmilem_cart";
     }
 
     InferSwitchesSystems = @{
@@ -52,7 +55,7 @@
         }
     }
 
-    DummyMachines = "gnw", "hh"
+    DummyMachines = "gnw", "electronic"
 }
 
 class Consts {        
@@ -125,6 +128,18 @@ function InvokeMame([State] $state) {
     
     if ($state.ArgsToMame.Length -gt 0) {
         $pArgs.ArgumentList = TransformParameters $state.ArgsToMame
+        [bool] $windowArgPresent = $false
+
+        foreach ($arg in $pArgs.ArgumentList) {
+            if (($arg -eq "-window") -or ($arg -eq "-nowindow")) {
+                $windowArgPresent = $true
+                break
+            }
+        }
+
+        if ( ! $windowArgPresent) {
+            $pArgs.ArgumentList += "-nowindow"
+        }
     }
 
     [string] $previousLocation = Get-Location
