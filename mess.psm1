@@ -26,6 +26,10 @@
         a2600p = @{
             Cartridges = "-cart";
         };
+        cpc6128 = @{
+            Cassettes = "-cass";
+            "Disk images" = "-flop1";
+        };
         plus4 = @{
             Cassettes = "-cass";
             Diskettes = "-flop";
