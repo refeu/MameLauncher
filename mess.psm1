@@ -56,6 +56,7 @@
             Cartridges = "-cart";
             Cassettes = "-cass";
             Diskettes = "-flop1";
+            "Opus Discovery disk images" = "opus";
         }
     }
 
@@ -301,6 +302,9 @@ function InitializeSpecialSystems([State] $state) {
         "spectrum" {
             if ($romType -eq "-cart") {
                 $state.ArgsToMame = ("spectrum", "-exp", "intf2") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+            } elseif ($romType -eq "opus") {
+                $state.ArgsToMame = ("spectrum", "-exp", "opus", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
             } elseif (($romType -eq "-flop1") -or (($romType -eq "-cass") -and ($state.GetRomName() -like "*128k*"))) {
                 $state.ArgsToMame = @("specpls3") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
