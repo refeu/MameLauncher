@@ -26,6 +26,12 @@
         a2600p = @{
             Cartridges = "-cart";
         };
+        apple2ep = @{
+            "5.25 miscellaneous disks" = "-flop1";
+            "5.25 original disks" = "-flop1";
+            Cassettes = "-cass";
+            "Cleanly cracked 5.25 disks" = "-flop1";
+        };
         cpc6128 = @{
             Cassettes = "-cass";
             "Disk images" = "-flop1";
@@ -259,6 +265,14 @@ function InitializeSpecialSystems([State] $state) {
         "a2600" {
             if ($romType -eq "-cass") {
                 $state.ArgsToMame = ("a2600", "-cart", "scharger") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+            }
+
+            break
+        }
+        "apple2ep" {
+            if ($romType -eq "-cass") {
+                $state.ArgsToMame = ("apple2ep", "-flop1", "dos3383") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
             }
 
