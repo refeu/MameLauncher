@@ -17,6 +17,7 @@ if [%1]==[plus4] goto :plus4
 if [%1]==[pico] goto :pico
 if [%1]==[vsmile] goto :vsmile
 if [%1]==[svision] goto :svision
+if [%1]==[a800] goto :a800
 
 :callMess
 pushd "%~dp0"
@@ -269,5 +270,42 @@ if not %rom:(Euro=%==%rom% (
 )
 
 %0 svisionn %2 %3
+
+:a800
+set rom="%~nx2"
+
+if not %rom:(PL)=%==%rom% (
+	%0 a800pal %2
+)
+
+if not %rom:(DE)=%==%rom% (
+	%0 a800pal %2
+)
+
+if not %rom:(GB)=%==%rom% (
+	%0 a800pal %2
+)
+
+if not %rom:(SW)=%==%rom% (
+	%0 a800pal %2
+)
+
+if not %rom:(FW)=%==%rom% (
+	%0 a800pal %2
+)
+
+if not %rom:(CS)=%==%rom% (
+	%0 a800pal %2
+)
+
+if not %rom:(FR)=%==%rom% (
+	%0 a800pal %2
+)
+
+if not %rom:(ES)=%==%rom% (
+	%0 a800pal %2
+)
+
+goto :callMess
 
 :end

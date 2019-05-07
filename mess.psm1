@@ -26,6 +26,14 @@
         a2600p = @{
             Cartridges = "-cart";
         };
+        a800 = @{
+            Cartridges = "-cart1";
+            "Floppy disks" = "-flop1";
+        };
+        a800pal = @{
+            Cartridges = "-cart1";
+            "Floppy disks" = "-flop1";
+        };
         apple2ep = @{
             "5.25 miscellaneous disks" = "-flop1";
             "5.25 original disks" = "-flop1";
