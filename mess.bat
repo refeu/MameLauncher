@@ -274,6 +274,10 @@ if not %rom:(Euro=%==%rom% (
 :a800
 set rom="%~nx2"
 
+if not %rom:(PAL)=%==%rom% (
+	%0 a800pal %2
+)
+
 if not %rom:(PL)=%==%rom% (
 	%0 a800pal %2
 )
