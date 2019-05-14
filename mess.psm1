@@ -334,6 +334,10 @@ function InitializeSpecialSystems([State] $state) {
 
             break
         }
+        "vectrex" {
+            [string] $firstWordRomName = ($state.GetRomName() -split ' ')[0]
+            $state.ArgsToMame += ("-view", $firstWordRomName)
+        }
     }
 
     return @()
