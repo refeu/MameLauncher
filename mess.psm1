@@ -62,6 +62,11 @@
             Cassettes = "-cass";
             Diskettes = "-flop";
         };
+        sc3000h = @{
+            Cartridges = "-cart";
+            Cassettes = "-cass";
+            "Super Control Station SF-7000 disk images" = "-flop";
+        };
         snes = @{
             Cartridges = "-cart";
             "Sufami Turbo cartridges" = "-cart2";
@@ -309,6 +314,16 @@ function InitializeSpecialSystems([State] $state) {
         "intvoice" { 
             if ($romType -eq "intvecs") {
                 $state.ArgsToMame = ("intvecs", "-cart") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            }
+
+            break
+        }
+        "sc3000h" {
+            if ($romType -eq "-cass") {
+                $state.ArgsToMame = ("sc3000h", "-cart", "basic3") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+            } elseif ($romType -eq "-flop") {
+                $state.ArgsToMame = @("sf7000") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
             }
 
             break
