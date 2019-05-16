@@ -5,7 +5,7 @@
     TemporaryRomsDirectory = "D:\Emulators\Mame64\roms"
     VersionFilename = "version.txt"
     CybikoBaseImage = "R:\MAME Assets\Software\cybiko\cybiko.bin"
-    
+
     SoftwareLists = @{
         plus4 = "plus4_cart";
         plus4p = "plus4_cart";
@@ -352,6 +352,9 @@ function InitializeSpecialSystems([State] $state) {
         "vectrex" {
             [string] $firstWordRomName = ($state.GetRomName() -split ' ')[0]
             $state.ArgsToMame += ("-view", $firstWordRomName)
+        }
+        "x68000" {
+            $state.ArgsToMame += ("-flop2", $state.GetRomPath())
         }
     }
 
