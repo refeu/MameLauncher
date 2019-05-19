@@ -72,6 +72,25 @@ if not %rom:(Euro=%==%rom% (
 goto :callMess
 
 :pce
+
+set cdrom="%~nx5"
+
+if "%~nx3"=="scdsys" (
+	if not %cdrom:(JP)=%==%cdrom% (
+		goto :callMess
+	) 
+	
+	if not %cdrom:(J)=%==%cdrom% (
+		goto :callMess
+	)
+
+	if not %cdrom:(NTSC-J)=%==%cdrom% (
+		goto :callMess
+	)
+
+	%0 tg16 %2 %3 %4 %5
+)
+
 7z l %3 | find "(japan)" >nul
 
 if %errorlevel%==1 (
