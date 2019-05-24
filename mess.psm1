@@ -7,6 +7,7 @@
     CybikoBaseImage = "R:\MAME Assets\Software\cybiko\cybiko.bin"
 
     SoftwareLists = @{
+        aes = "neogeo";
         plus4 = "plus4_cart";
         plus4p = "plus4_cart";
         vic10 = "vic10";
