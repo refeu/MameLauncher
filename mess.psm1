@@ -8,6 +8,9 @@
 
     SoftwareLists = @{
         aes = "neogeo";
+        bbcb = @{
+            ROMs = "bbc_rom"
+        }
         plus4 = "plus4_cart";
         plus4p = "plus4_cart";
         vic10 = "vic10";
@@ -41,6 +44,22 @@
             Cassettes = "-cass";
             "Cleanly cracked 5.25 disks" = "-flop1";
         };
+        bbcb = @{
+            "Acorn 65C102 Co-Processor discs" = "65c102"
+            "Acorn 6502 2nd Processor discs" = "6502"
+            "Acorn 32016 Co-Processor discs" = "32016"
+            "Acorn ARM Co-Processor discs" = "arm"
+            "Acorn Z80 2nd Processor discs" = "z80"
+            "Casper 68000 2nd Processor discs" = "casper"
+            "Model A cassettes" = "bbca"
+            "Model B (German) cassettes" = "bbcb_de"
+            "Model B (US) disks" = "bbcb_us"
+            "Model B cassettes" = "-cass"
+            "Model B disks" = "-flop1"
+            "Model B Original disks" = "-flop1"
+            ROMs = "-rom1"
+            "Torch Z80-68000 Co-Processor discs" = "torchf"            
+        }
         cpc6128 = @{
             Cassettes = "-cass";
             "Disk images" = "-flop1";
@@ -287,6 +306,27 @@ function InitializeSpecialSystems([State] $state) {
         "apple2ep" {
             if ($romType -eq "-cass") {
                 $state.ArgsToMame = ("apple2ep", "-flop1", "dos3383") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+            }
+
+            break
+        }
+        "bbcb" {
+            if ($romType -eq "-rom1") {
+                $state.ArgsToMame = @("bbcb") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "bbca") {
+                $state.ArgsToMame = @("bbca", "-cass") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "torchf") {
+                $state.ArgsToMame = ("torchf", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "bbcb_de") {
+                $state.ArgsToMame = ("bbcb_de", "-cass") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "bbcb_us") {
+                $state.ArgsToMame = ("bbcb_us", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "z80") {
+                $state.ArgsToMame = ("bbcb", "-tube", "z80", "-flop1", "cpmsys", "-flop2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 4
+            } elseif ($romType -notlike "-*")  {
+                $state.ArgsToMame = ("bbcb", "-tube", $romType, "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
             }
 
