@@ -11,8 +11,15 @@
         bbcb = @{
             ROMs = "bbc_rom"
         }
-        plus4 = "plus4_cart";
-        plus4p = "plus4_cart";
+        bbcm = @{
+            Cartridges = "bbcm_cart"
+        }
+        plus4 = @{
+            Cartridges = "plus4_cart"
+        }
+        plus4p = @{
+            Cartridges = "plus4_cart"
+        }
         vic10 = "vic10";
         scv = "scv";
         supracan = "supracan";
@@ -57,8 +64,13 @@
             "Model B cassettes" = "-cass"
             "Model B disks" = "-flop1"
             "Model B Original disks" = "-flop1"
-            ROMs = "-rom1"
             "Torch Z80-68000 Co-Processor discs" = "torchf"            
+        }
+        bbcm = @{
+            "Acorn 80186 Co-Processor discs" = "bbcm512"
+            Cassettes = "-cass"
+            Disks = "-flop1"
+            "Master Compact disks" = "bbcmc"
         }
         cpc6128 = @{
             Cassettes = "-cass";
@@ -312,9 +324,7 @@ function InitializeSpecialSystems([State] $state) {
             break
         }
         "bbcb" {
-            if ($romType -eq "-rom1") {
-                $state.ArgsToMame = @("bbcb") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
-            } elseif ($romType -eq "bbca") {
+            if ($romType -eq "bbca") {
                 $state.ArgsToMame = @("bbca", "-cass") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             } elseif ($romType -eq "torchf") {
                 $state.ArgsToMame = ("torchf", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
@@ -325,9 +335,18 @@ function InitializeSpecialSystems([State] $state) {
             } elseif ($romType -eq "z80") {
                 $state.ArgsToMame = ("bbcb", "-tube", "z80", "-flop1", "cpmsys", "-flop2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 4
-            } elseif ($romType -notlike "-*")  {
+            } elseif (($romType -eq "65c102") -or ($romType -eq "6502") -or ($romType -eq "32016") -or ($romType -eq "arm") -or ($romType -eq "casper"))  {
                 $state.ArgsToMame = ("bbcb", "-tube", $romType, "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
+            }
+
+            break
+        }
+        "bbcm" {
+            if ($romType -eq "bbcm512") {
+                $state.ArgsToMame = ("bbcm512", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "bbcmc") {
+                $state.ArgsToMame = ("bbcmc", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             }
 
             break
