@@ -51,6 +51,11 @@
             Cassettes = "-cass";
             "Cleanly cracked 5.25 disks" = "-flop1";
         };
+        atom = @{
+            Cassettes = "-cass"
+            "Disk images" = "-flop1"
+            "Utility ROMs" = "-cart"
+        }
         bbcb = @{
             "Acorn 65C102 Co-Processor discs" = "65c102"
             "Acorn 6502 2nd Processor discs" = "6502"
