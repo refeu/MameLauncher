@@ -14,6 +14,10 @@
         bbcm = @{
             Cartridges = "bbcm_cart"
         }
+        electron = @{
+            Cartridges = "electron_cart"
+            ROMs = "electron_rom"
+        }
         plus4 = @{
             Cartridges = "plus4_cart"
         }
@@ -81,6 +85,12 @@
             Cassettes = "-cass";
             "Disk images" = "-flop1";
         };
+        electron = @{
+            Cartridges = "-cart1"
+            Cassettes = "-cass"
+            Disks = "-flop"
+            ROMs = "-rom1"
+        }
         plus4 = @{
             Cassettes = "-cass";
             Diskettes = "-flop";
@@ -365,6 +375,31 @@ function InitializeSpecialSystems([State] $state) {
                 $state.SetRomPath($destImg)
                 return @($destImg)
             }
+
+            break
+        }
+        "electron" {
+            if (($romType -eq "-cart1") -or ($romType -eq "-rom1")) {
+                $state.ArgsToMame = @("electron") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+                [string] $romLinkName = InitializeSoftwareListRom $state
+                [string[]] $newArgs = ("electron", "-exp")
+
+                if ($romType -eq "-cart1") {
+                    $newArgs += "plus1"
+                } else {
+                    $newArgs += "rombox"
+                }
+
+                $state.ArgsToMame = $newArgs + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+                return @(Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip")
+            } elseif ($romType -eq "-flop") {
+                $state.ArgsToMame = ("electron", "-exp:plus3:exp", "fbjoy") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+            } else {
+                $state.ArgsToMame = ("electron", "-exp", "fbjoy") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+            } 
 
             break
         }
