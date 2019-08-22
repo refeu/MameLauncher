@@ -18,6 +18,7 @@
             Cartridges = "electron_cart"
             ROMs = "electron_rom"
         }
+        gba = "gba";
         plus4 = @{
             Cartridges = "plus4_cart"
         }
