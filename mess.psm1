@@ -19,16 +19,18 @@
             ROMs = "electron_rom"
         }
         gba = "gba";
+        mpt02 = "studio2";
+        pegasus = "pegasus_cart";
+        pegasusm = "pegasus_cart";
         plus4 = @{
             Cartridges = "plus4_cart"
         }
         plus4p = @{
             Cartridges = "plus4_cart"
         }
-        vic10 = "vic10";
         scv = "scv";
         supracan = "supracan";
-        mpt02 = "studio2";
+        vic10 = "vic10";
         vsmile = "vsmile_cart", "vsmilem_cart";
         vsmileg = "vsmile_cart", "vsmilem_cart";
         vsmilef = "vsmile_cart", "vsmilem_cart";
