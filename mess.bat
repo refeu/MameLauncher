@@ -21,7 +21,7 @@ if [%1]==[a800] goto :a800
 
 :callMess
 pushd "%~dp0"
-powershell -File .\mess.ps1 %* -skip_gameinfo -rompath %romPath% -nvram_directory %nvram%
+powershell -File .\mess.ps1 %* -keyboardprovider dinput -skip_gameinfo -rompath %romPath% -nvram_directory %nvram%
 popd
 goto :end
 
@@ -29,7 +29,7 @@ goto :end
 pushd "%~dp0"
 set dir="%~dp2"
 set rom=%~n2
-powershell -File .\mess.ps1 %1 %rom% -skip_gameinfo -rompath %romPath%;%dir% -nvram_directory %nvram%
+powershell -File .\mess.ps1 %1 %rom% -keyboardprovider dinput -skip_gameinfo -rompath %romPath%;%dir% -nvram_directory %nvram%
 popd
 goto :end
 
