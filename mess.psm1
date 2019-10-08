@@ -122,10 +122,13 @@
             "Sufami Turbo cartridges" = "-cart2";
         };
         spectrum = @{
+            "+3 disk images" = "-flop1";
+            "Beta Disc & TR-DOS disk images" = "pentagon";
             Cartridges = "-cart";
             Cassettes = "-cass";
-            Diskettes = "-flop1";
+            "Microdrive tapes & cartridges" = "-magt1";
             "Opus Discovery disk images" = "opus";
+            "Wafadrive tapes & cartridges" = "wafadrive";
         }
     }
 
@@ -448,6 +451,14 @@ function InitializeSpecialSystems([State] $state) {
                 $state.RomArgIdx += 2
             } elseif (($romType -eq "-flop1") -or (($romType -eq "-cass") -and ($state.GetRomName() -like "*128k*"))) {
                 $state.ArgsToMame = @("specpls3") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "pentagon") {
+                $state.ArgsToMame = ("pentagon", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "-magt1") {
+                $state.ArgsToMame = ("spectrum", "-exp", "intf1") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+            } elseif ($romType -eq "wafadrive") {
+                $state.ArgsToMame = ("spectrum", "-exp", "wafadrive", "-magt1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
             }
 
             break
