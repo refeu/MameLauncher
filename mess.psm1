@@ -7,7 +7,7 @@
     CybikoBaseImage = "R:\MAME Assets\Software\cybiko\cybiko.bin"
 
     SoftwareLists = @{
-        aes = "neogeo";
+        aes = "neogeo"
         bbcb = @{
             ROMs = "bbc_rom"
         }
@@ -18,46 +18,46 @@
             Cartridges = "electron_cart"
             ROMs = "electron_rom"
         }
-        gba = "gba";
-        mpt02 = "studio2";
-        pegasus = "pegasus_cart";
-        pegasusm = "pegasus_cart";
+        gba = "gba"
+        mpt02 = "studio2"
+        pegasus = "pegasus_cart"
+        pegasusm = "pegasus_cart"
         plus4 = @{
             Cartridges = "plus4_cart"
         }
         plus4p = @{
             Cartridges = "plus4_cart"
         }
-        scv = "scv";
-        supracan = "supracan";
-        vic10 = "vic10";
-        vsmile = "vsmile_cart", "vsmilem_cart";
-        vsmileg = "vsmile_cart", "vsmilem_cart";
-        vsmilef = "vsmile_cart", "vsmilem_cart";
+        scv = "scv"
+        supracan = "supracan"
+        vic10 = "vic10"
+        vsmile = "vsmile_cart", "vsmilem_cart"
+        vsmileg = "vsmile_cart", "vsmilem_cart"
+        vsmilef = "vsmile_cart", "vsmilem_cart"
     }
 
     InferSwitchesSystems = @{
         a2600 = @{
-            Cartridges = "-cart";
-            Cassettes = "-cass";
-        };
+            Cartridges = "-cart"
+            Cassettes = "-cass"
+        }
         a2600p = @{
-            Cartridges = "-cart";
-        };
+            Cartridges = "-cart"
+        }
         a800 = @{
-            Cartridges = "-cart1";
-            "Floppy disks" = "-flop1";
-        };
+            Cartridges = "-cart1"
+            "Floppy disks" = "-flop1"
+        }
         a800pal = @{
-            Cartridges = "-cart1";
-            "Floppy disks" = "-flop1";
-        };
+            Cartridges = "-cart1"
+            "Floppy disks" = "-flop1"
+        }
         apple2ep = @{
-            "5.25 miscellaneous disks" = "-flop1";
-            "5.25 original disks" = "-flop1";
-            Cassettes = "-cass";
-            "Cleanly cracked 5.25 disks" = "-flop1";
-        };
+            "5.25 miscellaneous disks" = "-flop1"
+            "5.25 original disks" = "-flop1"
+            Cassettes = "-cass"
+            "Cleanly cracked 5.25 disks" = "-flop1"
+        }
         atom = @{
             Cassettes = "-cass"
             "Disk images" = "-flop1"
@@ -85,9 +85,9 @@
             "Master Compact disks" = "bbcmc"
         }
         cpc6128 = @{
-            Cassettes = "-cass";
-            "Disk images" = "-flop1";
-        };
+            Cassettes = "-cass"
+            "Disk images" = "-flop1"
+        }
         electron = @{
             Cartridges = "-cart1"
             Cassettes = "-cass"
@@ -95,40 +95,44 @@
             ROMs = "-rom1"
         }
         plus4 = @{
-            Cassettes = "-cass";
-            Diskettes = "-flop";
-        };
+            Cassettes = "-cass"
+            Diskettes = "-flop"
+        }
         hx10 = @{
-            Cartridges = "-cart";
-            Cassettes = "-cass";
-            Diskettes = "-flop";
-        };
+            Cartridges = "-cart"
+            Cassettes = "-cass"
+            Diskettes = "-flop"
+        }
         intvoice = @{
-            Cartridges = "-cart";
-            "ECS cartridges" = "intvecs";
-        };
+            Cartridges = "-cart"
+            "ECS cartridges" = "intvecs"
+        }
         nms8250 = @{
-            Cartridges = "-cart1";
-            Cassettes = "-cass";
-            Diskettes = "-flop";
-        };
+            Cartridges = "-cart1"
+            Cassettes = "-cass"
+            Diskettes = "-flop"
+        }
         sc3000h = @{
-            Cartridges = "-cart";
-            Cassettes = "-cass";
-            "Super Control Station SF-7000 disk images" = "-flop";
-        };
+            Cartridges = "-cart"
+            Cassettes = "-cass"
+            "Super Control Station SF-7000 disk images" = "-flop"
+        }
         snes = @{
-            Cartridges = "-cart";
-            "Sufami Turbo cartridges" = "-cart2";
-        };
+            Cartridges = "-cart"
+            "Sufami Turbo cartridges" = "-cart2"
+        }
         spectrum = @{
-            "+3 disk images" = "-flop1";
-            "Beta Disc & TR-DOS disk images" = "pentagon";
-            Cartridges = "-cart";
-            Cassettes = "-cass";
-            "Microdrive tapes & cartridges" = "-magt1";
-            "Opus Discovery disk images" = "opus";
-            "Wafadrive tapes & cartridges" = "wafadrive";
+            "+3 disk images" = "-flop1"
+            "Beta Disc & TR-DOS disk images" = "pentagon"
+            Cartridges = "-cart"
+            Cassettes = "-cass"
+            "Microdrive tapes & cartridges" = "-magt1"
+            "Opus Discovery disk images" = "opus"
+            "Wafadrive tapes & cartridges" = "wafadrive"
+        }
+        x1turbo40 = @{
+            Cassettes = "-cass"
+            "Disk images" = "-flop1"
         }
     }
 
