@@ -474,6 +474,11 @@ function InitializeSpecialSystems([State] $state) {
         "x68000" {
             $state.ArgsToMame += ("-flop2", $state.GetRomPath())
         }
+        "x1turbo40" {
+            if ($romType -eq "-cass") {
+                $state.ArgsToMame += ("-flop2", "tapbas")
+            }
+        }
     }
 
     return @()
