@@ -94,6 +94,10 @@
             Disks = "-flop"
             ROMs = "-rom1"
         }
+        fmtmarty = @{
+            "CD-ROMs" = "-cdrm"
+            "Disk images" = "-flop"
+        }
         plus4 = @{
             Cassettes = "-cass"
             Diskettes = "-flop"
