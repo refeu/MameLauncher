@@ -96,7 +96,7 @@
         }
         fmtmarty = @{
             "CD-ROMs" = "-cdrm"
-            "Disk images" = "-flop"
+            "Disk images" = "-flop1"
         }
         plus4 = @{
             Cassettes = "-cass"
@@ -416,6 +416,11 @@ function InitializeSpecialSystems([State] $state) {
             } 
 
             break
+        }
+        "fmtmarty" {
+            if ($romType -notlike "-*") {
+                $state.ArgsToMame = ("fmtmarty", "-cdrm") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+            }
         }
         "hx10" { 
             if ($romType -eq "-flop") {
