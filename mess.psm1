@@ -262,13 +262,14 @@ function CreateDir([string] $dirName) {
 }
 
 function SaveCurrentMameVersion([string] $gameStateFolder) {
-    [string] $currentMameVersion = [int] (([double] (Get-Item (Join-Path $Settings.MameDir [Consts]::MameFileName)).VersionInfo.ProductVersion) * 1000)
+    [string] $mameFileName = Join-Path $Settings.MameDir ([Consts]::MameFileName)
+    [string] $currentMameVersion = [int] (([double] (Get-Item $mameFileName).VersionInfo.ProductVersion) * 1000)    
     Set-Content -LiteralPath $(Join-Path $gameStateFolder $Settings.VersionFilename) $currentMameVersion
     [string] $mameSpecificFile = GetMameSpecificVersionFile $currentMameVersion
 
     if (!(Test-Path -LiteralPath $mameSpecificFile -PathType Leaf)) {
         CreateDir ([Consts]::MameSpecificVersionsFolder)
-        Copy-Item ([Consts]::MameFileName) $mameSpecificFile -Force
+        Copy-Item $mameFileName $mameSpecificFile -Force
     }
 }
 
