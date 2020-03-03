@@ -130,6 +130,7 @@
             "Beta Disc & TR-DOS disk images" = "pentagon"
             Cartridges = "-cart"
             Cassettes = "-cass"
+            "MGT Disciple - Plus D disks" = "plusd"
             "Microdrive tapes & cartridges" = "-magt1"
             "Opus Discovery disk images" = "opus"
             "Wafadrive tapes & cartridges" = "wafadrive"
@@ -473,6 +474,14 @@ function InitializeSpecialSystems([State] $state) {
             } elseif ($romType -eq "wafadrive") {
                 $state.ArgsToMame = ("spectrum", "-exp", "wafadrive", "-magt1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
+            } elseif ($romType -eq "plusd") {
+                if ($state.GetRomName() -like "*DISCiPLE*") {
+                    $state.ArgsToMame = ("spectrum", "-exp", "disciple", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+                    $state.RomArgIdx += 2
+                } else {
+                    $state.ArgsToMame = ("spectrum", "-exp", "plusd", "-flop1", "plusdsys", "-flop2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+                    $state.RomArgIdx += 4
+                }                
             }
 
             break
