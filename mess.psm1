@@ -22,6 +22,7 @@
         mpt02 = "studio2"
         pegasus = "pegasus_cart"
         pegasusm = "pegasus_cart"
+        pico = "pico"
         plus4 = @{
             Cartridges = "plus4_cart"
         }
