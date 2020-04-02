@@ -48,10 +48,11 @@
         a800 = @{
             Cartridges = "-cart1"
             "Floppy disks" = "-flop1"
+            Cassettes = "-cass"
         }
         a800pal = @{
             Cartridges = "-cart1"
-            "Floppy disks" = "-flop1"
+            "Floppy disks" = "-flop1"            
         }
         apple2ep = @{
             "5.25 miscellaneous disks" = "-flop1"
@@ -342,6 +343,14 @@ function InitializeSpecialSystems([State] $state) {
         "a2600" {
             if ($romType -eq "-cass") {
                 $state.ArgsToMame = ("a2600", "-cart", "scharger") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+            }
+
+            break
+        }
+        "a800" {
+            if ($romType -eq "-cass") {
+                $state.ArgsToMame = ("a800", "-sio", "cassette") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
             }
 
