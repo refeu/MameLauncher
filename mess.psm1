@@ -1,215 +1,9 @@
-[hashtable] $Settings = @{
-    MameBaseFileName = "mame64"
-    StateDirectoryBase = "C:\Users\Heads\OneDrive\SAVEDG~1\Mess\sta"    
-    MameDir = "D:\Emulators\Mame64"
-    TemporaryRomsDirectory = "D:\Emulators\Mame64\roms"
-    VersionFilename = "version.txt"
-    CybikoBaseImage = "R:\MAME Assets\Software\cybiko\cybiko.bin"
+using module ".\Consts.psm1"
+using module ".\State.psm1"
 
-    SoftwareLists = @{
-        aes = "neogeo"
-        bbcb = @{
-            ROMs = "bbc_rom"
-        }
-        bbcm = @{
-            Cartridges = "bbcm_cart"
-        }
-        electron = @{
-            Cartridges = "electron_cart"
-            ROMs = "electron_rom"
-        }
-        gba = "gba"
-        mpt02 = "studio2"
-        pegasus = "pegasus_cart"
-        pegasusm = "pegasus_cart"
-        pico = "pico"
-        plus4 = @{
-            Cartridges = "plus4_cart"
-        }
-        plus4p = @{
-            Cartridges = "plus4_cart"
-        }
-        scv = "scv"
-        supracan = "supracan"
-        vic10 = "vic10"
-        vsmile = "vsmile_cart", "vsmilem_cart"
-        vsmileg = "vsmile_cart", "vsmilem_cart"
-        vsmilef = "vsmile_cart", "vsmilem_cart"
-    }
-
-    InferSwitchesSystems = @{
-        a2600 = @{
-            Cartridges = "-cart"
-            Cassettes = "-cass"
-        }
-        a2600p = @{
-            Cartridges = "-cart"
-        }
-        a800 = @{
-            Cartridges = "-cart1"
-            "Floppy disks" = "-flop1"
-            Cassettes = "-cass"
-        }
-        a800pal = @{
-            Cartridges = "-cart1"
-            "Floppy disks" = "-flop1"            
-        }
-        apple2ep = @{
-            "5.25 miscellaneous disks" = "-flop1"
-            "5.25 original disks" = "-flop1"
-            Cassettes = "-cass"
-            "Cleanly cracked 5.25 disks" = "-flop1"
-        }
-        atom = @{
-            Cassettes = "-cass"
-            "Disk images" = "-flop1"
-            "Utility ROMs" = "-cart"
-        }
-        bbcb = @{
-            "Acorn 65C102 Co-Processor discs" = "65c102"
-            "Acorn 6502 2nd Processor discs" = "6502"
-            "Acorn 32016 Co-Processor discs" = "32016"
-            "Acorn ARM Co-Processor discs" = "arm"
-            "Acorn Z80 2nd Processor discs" = "z80"
-            "Casper 68000 2nd Processor discs" = "casper"
-            "Model A cassettes" = "bbca"
-            "Model B (German) cassettes" = "bbcb_de"
-            "Model B (US) disks" = "bbcb_us"
-            "Model B cassettes" = "-cass"
-            "Model B disks" = "-flop1"
-            "Model B Original disks" = "-flop1"
-            "Torch Z80-68000 Co-Processor discs" = "torchf"            
-        }
-        bbcm = @{
-            "Acorn 80186 Co-Processor discs" = "bbcm512"
-            Cassettes = "-cass"
-            Disks = "-flop1"
-            "Master Compact disks" = "bbcmc"
-        }
-        cpc6128 = @{
-            Cassettes = "-cass"
-            "Disk images" = "-flop1"
-        }
-        electron = @{
-            Cartridges = "-cart1"
-            Cassettes = "-cass"
-            Disks = "-flop"
-            ROMs = "-rom1"
-        }
-        fmtmarty = @{
-            "CD-ROMs" = "-cdrm"
-            "Disk images" = "-flop1"
-        }
-        plus4 = @{
-            Cassettes = "-cass"
-            Diskettes = "-flop"
-        }
-        hx10 = @{
-            Cartridges = "-cart"
-            Cassettes = "-cass"
-            Diskettes = "-flop"
-        }
-        intvoice = @{
-            Cartridges = "-cart"
-            "ECS cartridges" = "intvecs"
-        }
-        nms8250 = @{
-            Cartridges = "-cart1"
-            Cassettes = "-cass"
-            Diskettes = "-flop"
-        }
-        sc3000h = @{
-            Cartridges = "-cart"
-            Cassettes = "-cass"
-            "Super Control Station SF-7000 disk images" = "-flop"
-        }
-        snes = @{
-            Cartridges = "-cart"
-            "Sufami Turbo cartridges" = "-cart2"
-        }
-        spectrum = @{
-            "+3 disk images" = "-flop1"
-            "Beta Disc & TR-DOS disk images" = "pentagon"
-            Cartridges = "-cart"
-            Cassettes = "-cass"
-            "MGT Disciple - Plus D disks" = "plusd"
-            "Microdrive tapes & cartridges" = "-magt1"
-            "Opus Discovery disk images" = "opus"
-            "Wafadrive tapes & cartridges" = "wafadrive"
-        }
-        x1turbo40 = @{
-            Cassettes = "-cass"
-            "Disk images" = "-flop1"
-        }
-    }
-
-    DummyMachines = "gnw", "electronic"
-}
-
-class Consts {        
-    static [string[]] $InvalidFilenameChars = '<', '>', '"', '\\', '|', '?', '*'
-    static [string] $MameFileName
-    static [string] $HashDirectory
-    static [string] $MameSpecificVersionsFolder
-    static [string] $DefaultStaFolder
-    static [string] $ImgTool
-
-    static [void] Initialize([hashtable] $Settings) {
-        [Consts]::MameFileName = "$($Settings.MameBaseFileName).exe"
-        [Consts]::HashDirectory = (Join-Path $Settings.MameDir "hash")
-        [Consts]::MameSpecificVersionsFolder = (Join-Path $Settings.StateDirectoryBase "Versions")
-        [Consts]::DefaultStaFolder = (Join-Path $Settings.StateDirectoryBase "Default")
-        [Consts]::ImgTool = (Join-Path $Settings.MameDir "imgtool.exe")
-    }
-}
-
+[object] $Settings = Get-Content (Join-Path $PSScriptRoot "settings.json") -Raw | ConvertFrom-Json
 [Consts]::Initialize($Settings)
-
-class State {        
-    static [string] $StateDirectoryBase
-    
-    [string] $MameToInvoke = [Consts]::MameFileName
-    [string[]] $ArgsToMame
-    [int] $RomArgIdx = 2
-
-    [string] GetRomPath() {
-        return $this.ArgsToMame[$this.RomArgIdx]
-    }
-
-    [void] SetRomPath([string] $newPath) {
-        $this.ArgsToMame[$this.RomArgIdx] = $newPath
-    }
-
-    [string] GetSystem() {
-        return $this.ArgsToMame[0]
-    }
-
-    [string] GetRomName() {
-        return FileWithoutExt $this.GetRomPath()
-    }
-
-    [string] GetGameStateFolder() {
-        return Join-Path ([State]::StateDirectoryBase) "$($this.GetRomName()).$($this.GetSystem())"
-    }
-
-    static [void] Initialize([hashtable] $Settings) {
-        [State]::StateDirectoryBase = $Settings.StateDirectoryBase
-    }
-}
-
 [State]::Initialize($Settings)
-
-function PutInQuotesIfNeeded([string] $str) {
-    if ($str.Contains(" ") -and -not $str.StartsWith('"')) {
-        return "`"$str`""
-    } else {
-        return $str
-    }
-}
-
-function TransformParameters([string[]] $params) {
-    $params | ForEach-Object { PutInQuotesIfNeeded $_ }
-}
 
 function InvokeMame([State] $state) {
     [hashtable] $pArgs = @{}
@@ -238,30 +32,8 @@ function InvokeMame([State] $state) {
 
 Export-ModuleMember InvokeMame
 
-function FileWithoutExt([string] $fileName) {
-    [System.IO.Path]::GetFileNameWithoutExtension($fileName)
-}
-
-function FileExt([string] $fileName) {
-    [System.IO.Path]::GetExtension($fileName)
-}
-
 function GetMameSpecificVersionFile([int] $version) {
     Join-Path ([Consts]::MameSpecificVersionsFolder) "$($Settings.MameBaseFileName).$version.exe"
-}
-
-function CreateSymbolicLink([string] $link, [string] $target) {
-    if (Test-Path -LiteralPath $link -PathType Leaf) {
-        Remove-Item $link
-    }
-    
-    Start-Process "cmd" -ArgumentList "/c", "mklink", (PutInQuotesIfNeeded $link), (PutInQuotesIfNeeded $target) -Wait
-}
-
-function CreateDir([string] $dirName) {
-    if (!(Test-Path -LiteralPath $dirName -PathType Container)) {
-        New-Item $dirName -ItemType Directory | Out-Null
-    }
 }
 
 function SaveCurrentMameVersion([string] $gameStateFolder) {
@@ -313,15 +85,15 @@ function InitializeInferSwitches([State] $state) {
     
     [string] $system = $state.GetSystem()
 
-    if (! $Settings.InferSwitchesSystems.ContainsKey($system)) {
+    if (! (ContainsMember $Settings.InferSwitchesSystems $system)) {
         return
     }    
     
-    [hashtable] $inferSwitches = $Settings.InferSwitchesSystems[$system]
-    [string] $romType = FindRomType $state.ArgsToMame[1]    
+    [object] $inferSwitches = $Settings.InferSwitchesSystems.($system)
+    [string] $romType = FindRomType $state.ArgsToMame[1]
 
-    if ($inferSwitches.ContainsKey($romType)) {
-        [string] $switch = $inferSwitches[$romType]
+    if (ContainsMember $inferSwitches $romType) {
+        [string] $switch = $inferSwitches.($romType)
         $state.ArgsToMame = ($state.GetSystem(), $switch) + $state.ArgsToMame[1..$state.ArgsToMame.Length]
     }
 }
@@ -516,20 +288,29 @@ function InitializeSpecialSystems([State] $state) {
 Export-ModuleMember InitializeSpecialSystems
 
 function InitializeSoftwareListRom([State] $state) {
-    if (! $Settings.SoftwareLists.ContainsKey($state.GetSystem())) {
-        return ""
-    }
-    
-    if ($state.ArgsToMame[1] -like "-*") {
-        # The supposed rom name is in fact a switch... So use switch mode instead of software mode
+    if (! (ContainsMember $Settings.SoftwareLists $state.GetSystem())) {
         return ""
     }
 
-    $state.romArgIdx = 1
-    $softwareLists = $Settings.SoftwareLists[$state.GetSystem()]
+    if ($state.ArgsToMame[1] -notlike "-*") {
+        # The supposed switch is in fact a rom name...
+        $state.romArgIdx = 1        
+    }
 
-    if ($softwareLists -is [hashtable]) {
-        $softwareLists = @($softwareLists[(FindRomType $state.GetRomPath())])
+    if ((FileExt $state.GetRomPath()).ToLower() -ne ".zip") {
+        return ""
+    }
+        
+    $softwareLists = $Settings.SoftwareLists.($state.GetSystem())
+
+    if ($softwareLists -is [PSCustomObject]) {
+        [string] $romType = FindRomType $state.GetRomPath()
+
+        if (! (ContainsMember $softwareLists $romType)) {
+            return ""
+        }
+
+        $softwareLists = @($softwareLists.($romType))
     } else {
         $softwareLists = @($softwareLists)
     }
@@ -539,7 +320,8 @@ function InitializeSoftwareListRom([State] $state) {
 
         if ($romLinkName -ne "") {
             CreateSymbolicLink (Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip") $state.GetRomPath()
-            $state.SetRomPath($romLinkName)
+            $state.ArgsToMame = ($state.ArgsToMame[0], $romLinkName) + $state.ArgsToMame[($state.romArgIdx + 1)..($state.ArgsToMame.Length)]
+            $state.romArgIdx = 1
             return $romLinkName
         }
     }

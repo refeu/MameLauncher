@@ -1,0 +1,89 @@
+{
+    "MameBaseFileName": "mame64",
+    "StateDirectoryBase": "C:\\Mame64\\sta",
+    "MameDir": "C:\\Mame64",
+    "TemporaryRomsDirectory": "C:\\Mame64\\roms",
+    "VersionFilename": "version.txt",
+    "CybikoBaseImage": "C:\\Mame64\\cybiko.bin",
+    "SoftwareLists": {
+        "aes": "neogeo",
+        "bbcb": {
+            "ROMs": "bbc_rom"
+        },
+        "electron": {
+            "Cartridges": "electron_cart",
+            "ROMs": "electron_rom"
+        },
+        "vsmile": ["vsmile_cart", "vsmilem_cart"]
+    },
+    "InferSwitchesSystems": {
+        "a2600": {
+            "Cartridges": "-cart",
+            "Cassettes": "-cass"
+        }
+        "bbcb": {
+            "Acorn 65C102 Co-Processor discs": "65c102",
+            "Acorn 6502 2nd Processor discs": "6502",
+            "Acorn 32016 Co-Processor discs": "32016",
+            "Acorn ARM Co-Processor discs": "arm",
+            "Acorn Z80 2nd Processor discs": "z80",
+            "Casper 68000 2nd Processor discs": "casper",
+            "Model A cassettes": "bbca",
+            "Model B (German) cassettes": "bbcb_de",
+            "Model B (US) disks": "bbcb_us",
+            "Model B cassettes": "-cass",
+            "Model B disks": "-flop1",
+            "Model B Original disks": "-flop1",
+            "Torch Z80-68000 Co-Processor discs": "torchf"            
+        },
+        "bbcm": {
+            "Acorn 80186 Co-Processor discs": "bbcm512",
+            "Cassettes": "-cass",
+            "Disks": "-flop1",
+            "Master Compact disks": "bbcmc"
+        },
+        "electron": {
+            "Cartridges": "-cart1",
+            "Cassettes": "-cass",
+            "Disks": "-flop",
+            "ROMs": "-rom1"
+        },
+        "fmtmarty": {
+            "CD-ROMs": "-cdrm",
+            "Disk images": "-flop1"
+        },
+        "hx10": {
+            "Cartridges": "-cart",
+            "Cassettes": "-cass",
+            "Diskettes": "-flop"
+        },
+        "intvoice": {
+            "Cartridges": "-cart",
+            "ECS cartridges": "intvecs"
+        },
+        "sc3000h": {
+            "Cartridges": "-cart",
+            "Cassettes": "-cass",
+            "Super Control Station SF-7000 disk images": "-flop"
+        },
+        "snes": {
+            "Cartridges": "-cart",
+            "Sufami Turbo cartridges": "-cart2"
+        },
+        "spectrum": {
+            "+3 disk images": "-flop1",
+            "Beta Disc & TR-DOS disk images": "pentagon",
+            "Cartridges": "-cart",
+            "Cassettes": "-cass",
+            "MGT Disciple - Plus D disks": "plusd",
+            "Microdrive tapes & cartridges": "-magt1",
+            "Opus Discovery disk images": "opus",
+            "Wafadrive tapes & cartridges": "wafadrive"
+        },
+        "x1turbo40": {
+            "Cassettes": "-cass",
+            "Disk images": "-flop1"
+        }
+    },
+    "DummyMachines": ["gnw", "electronic"]
+}
