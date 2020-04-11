@@ -184,6 +184,10 @@ if "%specialPart%"=="UK" (
 	%0 megadriv %2 %3
 )
 
+if "%specialPart%"=="Jpn" (
+	%0 megadrij %2 %3
+)
+
 set specialPartCheck=%specialPart:U=%
 if not "%specialPartCheck%"=="" set specialPartCheck=%specialPartCheck:J=%
 if not "%specialPartCheck%"=="" set specialPartCheck=%specialPartCheck:E=%
