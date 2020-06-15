@@ -148,7 +148,11 @@ function InitializeSpecialSystems([State] $state) {
             } elseif ($romType -eq "z80") {
                 $state.ArgsToMame = ("bbcb", "-tube", "z80", "-flop1", "cpmsys", "-flop2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 4
-            } elseif (($romType -eq "65c102") -or ($romType -eq "6502") -or ($romType -eq "32016") -or ($romType -eq "arm") -or ($romType -eq "casper"))  {
+            } elseif (($romType -eq "6502") -or ($romType -eq "32016") -or ($romType -eq "arm") -or ($romType -eq "casper"))  {
+                if (($romType -eq "6502") -and ($state.GetRomName() -like "*65c102*")) {
+                    $romType = "65c102"
+                }
+
                 $state.ArgsToMame = ("bbcb", "-tube", $romType, "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
             }
@@ -264,6 +268,8 @@ function InitializeSpecialSystems([State] $state) {
                     $state.ArgsToMame = ("spectrum", "-exp", "plusd", "-flop1", "plusdsys", "-flop2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                     $state.RomArgIdx += 4
                 }                
+            } elseif ($romType -eq "ts2068") {
+                $state.ArgsToMame = ("ts2068", "-cass") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             }
 
             break
