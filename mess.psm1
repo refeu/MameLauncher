@@ -137,12 +137,8 @@ function InitializeSpecialSystems([State] $state) {
             break
         }
         "bbcb" {
-            if ($romType -eq "bbca") {
-                $state.ArgsToMame = @("bbca", "-cass") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
-            } elseif ($romType -eq "torchf") {
+            if ($romType -eq "torchf") {
                 $state.ArgsToMame = ("torchf", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
-            } elseif ($romType -eq "bbcb_de") {
-                $state.ArgsToMame = ("bbcb_de", "-cass") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             } elseif ($romType -eq "bbcb_us") {
                 $state.ArgsToMame = ("bbcb_us", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             } elseif ($romType -eq "z80") {
@@ -155,15 +151,14 @@ function InitializeSpecialSystems([State] $state) {
 
                 $state.ArgsToMame = ("bbcb", "-tube", $romType, "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
-            }
-
-            break
-        }
-        "bbcm" {
-            if ($romType -eq "bbcm512") {
+            } elseif ($romType -eq "bbcm512") {
                 $state.ArgsToMame = ("bbcm512", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             } elseif ($romType -eq "bbcmc") {
                 $state.ArgsToMame = ("bbcmc", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "bbcm") {
+                $state.ArgsToMame = ("bbcm", "-cart") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "bbcm-flop1") {
+                $state.ArgsToMame = ("bbcm", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             }
 
             break
@@ -300,7 +295,7 @@ function InitializeSoftwareListRom([State] $state) {
 
     if ($state.ArgsToMame[1] -notlike "-*") {
         # The supposed switch is in fact a rom name...
-        $state.romArgIdx = 1        
+        $state.RomArgIdx = 1        
     }
 
     if ((FileExt $state.GetRomPath()).ToLower() -ne ".zip") {
