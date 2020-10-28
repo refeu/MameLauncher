@@ -159,6 +159,9 @@ function InitializeSpecialSystems([State] $state) {
                 $state.ArgsToMame = ("bbcm", "-cart") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             } elseif ($romType -eq "bbcm-flop1") {
                 $state.ArgsToMame = ("bbcm", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif ($romType -eq "m5000") {
+                $state.ArgsToMame = ("bbcb", "-1mhzbus", "m5000", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
             }
 
             break
