@@ -1,10 +1,10 @@
 {
-    "MameBaseFileName": "mame64",
-    "StateDirectoryBase": "C:\\Mame64\\sta",
-    "MameDir": "C:\\Mame64",
-    "TemporaryRomsDirectory": "C:\\Mame64\\roms",
+    "MameBaseFileName": "mame",
+    "StateDirectoryBase": "C:\\Mame\\sta",
+    "MameDir": "C:\\Mame",
+    "TemporaryRomsDirectory": "C:\\Mame\\roms",
     "VersionFilename": "version.txt",
-    "CybikoBaseImage": "C:\\Mame64\\cybiko.bin",
+    "CybikoBaseImage": "C:\\Mame\\cybiko.bin",
     "SoftwareLists": {
         "aes": "neogeo",
         "bbcb": {
