@@ -223,6 +223,21 @@ function InitializeSpecialSystems([State] $state) {
 
             break
         }
+        "nes" {
+            if ($romType -eq "-cass") {
+                [string] $romLinkName = GetLinkForSoftwareList $state.GetRomName() "famicom_cass"
+
+                if ($romLinkName -ne "") {
+                    [string] $linkFullPath = Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip"
+                    CreateSymbolicLink $linkFullPath $state.GetRomPath()
+                    $state.ArgsToMame = ("famicom", "-cart", "famibs30", "-exp", "fc_keyboard") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                    $state.romArgIdx += 4
+                    return @($linkFullPath)
+                }
+            }
+
+            break
+        }
         "sc3000h" {
             if ($romType -eq "-cass") {
                 $state.ArgsToMame = ("sc3000h", "-cart", "basic3") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
@@ -404,7 +419,36 @@ function FinalizeStateDirectory([State] $state, [string] $usedStateFolder) {
             SaveCurrentMameVersion $gameStateFolder
         }
     
-        Remove-Item -LiteralPath $usedStateFolder -Recurse -Force
+        [object[]] $items = Get-ChildItem -LiteralPath $usedStateFolder -Recurse
+
+        foreach ($item in $items) {
+            if ($item.PSIsContainer -eq $false) {
+                try {
+                    $item.Delete()
+                }
+                catch {
+                    Write-Warning "FinalizeStateDirectory - Couldn't delete $($item.FullName), error: $($_.Exception.Message)"
+                }
+            }
+        }
+
+        $items = Get-ChildItem -LiteralPath $usedStateFolder -Recurse
+        foreach ($item in $items) {
+            try {
+                $item.Delete()
+            }
+            catch {
+                Write-Warning "FinalizeStateDirectory - Couldn't delete $($item.FullName), error: $($_.Exception.Message)"
+            }
+        }
+        
+        [System.IO.DirectoryInfo] $item = Get-Item -LiteralPath $usedStateFolder
+        try {
+            $item.Delete($true)
+        }
+        catch {
+            Write-Warning "FinalizeStateDirectory - Couldn't delete $($item.FullName), error: $($_.Exception.Message)"
+        }
     }
 }
 
