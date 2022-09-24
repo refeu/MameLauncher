@@ -283,7 +283,9 @@ function InitializeSpecialSystems([State] $state) {
                 }                
             } elseif ($romType -eq "ts2068") {
                 $state.ArgsToMame = ("ts2068", "-cass") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
-            }
+            } elseif ($romType -eq "tsconf") {
+                $state.ArgsToMame = ("tsconf", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } 
 
             break
         }

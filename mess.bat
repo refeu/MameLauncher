@@ -18,6 +18,7 @@ if [%1]==[pico] goto :pico
 if [%1]==[vsmile] goto :vsmile
 if [%1]==[svision] goto :svision
 if [%1]==[a800] goto :a800
+if [%1]==[c64] goto :c64
 
 :callMess
 pushd "%~dp0"
@@ -331,6 +332,55 @@ if not %rom:(FR)=%==%rom% (
 
 if not %rom:(ES)=%==%rom% (
 	%0 a800pal %2
+)
+
+goto :callMess
+
+:c64
+set rom="%~nx2"
+
+if not %rom:(USA=%==%rom% (
+	%0 c64 %2
+)
+
+if not %rom:Europe)=%==%rom% (
+	%0 c64p %2
+)
+
+if not %rom:(Australia)=%==%rom% (
+	%0 c64p %2
+)
+
+if not %rom:(Brazil)=%==%rom% (
+	%0 c64p %2
+)
+
+if not %rom:(France)=%==%rom% (
+	%0 c64p %2
+)
+
+if not %rom:(Germany)=%==%rom% (
+	%0 c64_se %2
+)
+
+if not %rom:(Italy)=%==%rom% (
+	%0 c64_se %2
+)
+
+if not %rom:(Japan)=%==%rom% (
+	%0 c64_jp %2
+)
+
+if not %rom:(Netherlands)=%==%rom% (
+	%0 c64p %2
+)
+
+if not %rom:(Spain)=%==%rom% (
+	%0 c64p %2
+)
+
+if not %rom:(Sweden)=%==%rom% (
+	%0 c64_se %2
 )
 
 goto :callMess
