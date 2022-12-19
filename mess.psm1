@@ -214,7 +214,7 @@ function InitializeSpecialSystems([State] $state) {
                 $state.RomArgIdx += 2
             }
             elseif ($romType -eq "hb3600") {
-                $state.ArgsToMame = ("hb8000", "-cart", "hb3600") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                $state.ArgsToMame = ("hb8000", "-cart1", "hb3600", "-flop") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
             }
 
