@@ -212,12 +212,11 @@ function InitializeSpecialSystems([State] $state) {
             if ($romType -eq "-flop") {
                 $state.ArgsToMame = ("hx10", "-cart", "fsfd1") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
-            }
-            elseif ($romType -eq "hb3600") {
+            } elseif ($romType -eq "hb3600") {
                 $state.ArgsToMame = ("hb8000", "-cart1", "hb3600", "-flop") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
-            } elseif ($romType -eq "softcard") {
-				$state.ArgsToMame = ("hx10", "-cartslot1", "softcard", "-cart2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            } elseif (($romType -eq "softcard") -or ($romType -eq "beepack")) {
+				$state.ArgsToMame = ("hx10", "-cartslot1", $romType, "-cart2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
 			}
 
