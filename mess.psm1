@@ -216,7 +216,10 @@ function InitializeSpecialSystems([State] $state) {
             elseif ($romType -eq "hb3600") {
                 $state.ArgsToMame = ("hb8000", "-cart1", "hb3600", "-flop") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
-            }
+            } elseif ($romType -eq "softcard") {
+				$state.ArgsToMame = ("hx10", "-cartslot1", "softcard", "-cart2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 2
+			}
 
             break
         }
@@ -234,7 +237,7 @@ function InitializeSpecialSystems([State] $state) {
                 if ($romLinkName -ne "") {
                     [string] $linkFullPath = Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip"
                     CreateSymbolicLink $linkFullPath $state.GetRomPath()
-                    $state.ArgsToMame = ("famicom", "-cart", "famibs30", "-exp", "fc_keyboard") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+                    $state.ArgsToMame = ("famicom", "-cart", "famibs30", "-exp", "fc_keyboard", "-cass", $romLinkName) + $state.ArgsToMame[3..($state.ArgsToMame.Length)]
                     $state.romArgIdx += 4
                     return @($linkFullPath)
                 }
@@ -288,14 +291,8 @@ function InitializeSpecialSystems([State] $state) {
             } elseif ($romType -eq "ts2068") {
                 $state.ArgsToMame = ("ts2068", "-cass") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             } elseif ($romType -eq "timex_dock") {
-                [string] $romLinkName = GetLinkForSoftwareList $state.GetRomName() $romType
-
-                if ($romLinkName -ne "") {
-                    [string] $linkFullPath = Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip"
-                    CreateSymbolicLink $linkFullPath $state.GetRomPath()
-                    $state.ArgsToMame = ("ts2068", "-cart", $romLinkName) + $state.ArgsToMame[3..($state.ArgsToMame.Length)]                    
-                    return @($linkFullPath)
-                }
+				$state.ArgsToMame = ("ts2068", "-cart") + $state.ArgsToMame[1..($state.ArgsToMame.Length)]
+				$state.RomArgIdx += 1
             } elseif ($romType -eq "tsconf") {
                 $state.ArgsToMame = ("tsconf", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             } 
@@ -354,8 +351,8 @@ function InitializeSoftwareListRom([State] $state) {
 
         if ($romLinkName -ne "") {
             CreateSymbolicLink (Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip") $state.GetRomPath()
-            $state.ArgsToMame = ($state.ArgsToMame[0], $romLinkName) + $state.ArgsToMame[($state.romArgIdx + 1)..($state.ArgsToMame.Length)]
-            $state.romArgIdx = 1
+            $state.ArgsToMame = $state.ArgsToMame[0..($state.romArgIdx - 2)] + $romLinkName + $state.ArgsToMame[($state.romArgIdx + 1)..($state.ArgsToMame.Length)]
+            $state.romArgIdx -= 1
             return $romLinkName
         }
     }
