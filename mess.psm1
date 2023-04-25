@@ -26,6 +26,7 @@ function InvokeMame([State] $state) {
 
     [string] $previousLocation = Get-Location
     Set-Location $Settings.MameDir
+    Write-Host "Arguments to mame: $($pArgs.ArgumentList)"
     Start-Process (Join-Path $Settings.MameDir $state.MameToInvoke) -Wait -NoNewWindow @pArgs
     Set-Location $previousLocation
 }
@@ -218,7 +219,9 @@ function InitializeSpecialSystems([State] $state) {
             } elseif (($romType -eq "softcard") -or ($romType -eq "beepack")) {
 				$state.ArgsToMame = ("hx10", "-cartslot1", $romType, "-cart2") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
-			}
+            } elseif ($romType -eq "yis604") {
+                $state.ArgsToMame = ("yis604", "-mini") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            }
 
             break
         }
