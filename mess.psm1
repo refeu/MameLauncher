@@ -232,6 +232,14 @@ function InitializeSpecialSystems([State] $state) {
 
             break
         }
+        "macplus" {
+            if ($romType -eq "maciici") {
+                $state.ArgsToMame = ("maciici", "-ram", "8M", "-harddisk1", "mac608", "-flop") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+                $state.RomArgIdx += 4
+            }
+
+            break
+        }
         "nes" {
             if ($romType -eq "-cass") {
                 [string] $romLinkName = GetLinkForSoftwareList $state.GetRomName() "famicom_cass"
