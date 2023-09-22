@@ -236,7 +236,7 @@ function InitializeSpecialSystems([State] $state) {
             if ($romType -eq "maciici") {
                 # Create a script to be invoked
                 [string] $script = Join-Path $Settings.TemporaryRomsDirectory "maciici_$($state.GetRomName()).lua"
-                Write-Output "image = manager.machine.images[':fdc:0:35hd']`nwhile image.exists do if not emu.wait(1) then return end end`nimage:load('$($state.GetRomPath() -replace '\\','\\')')" | Out-File -FilePath $script -Encoding ascii
+                Write-Output "image = manager.machine.images[':fdc:0:35hd']`nwhile image.exists do if not emu.wait(1) then return end end`nimage:load('$($state.GetRomPath() -replace '\\','\\' -replace '''','\''')')" | Out-File -FilePath $script -Encoding ascii
                 $state.ArgsToMame = ("maciici", "-autoboot_script", "`"$script`"", "-ram", "8M", "-hard", "mac608", "-flop") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 4
                 return $script
