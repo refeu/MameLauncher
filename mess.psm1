@@ -255,6 +255,8 @@ function InitializeSpecialSystems([State] $state) {
                     $state.romArgIdx += 4
                     return @($linkFullPath)
                 }
+            } elseif ($romType -eq "timetp25") {
+                $state.ArgsToMame = ("timetp25", "-cart") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             }
 
             break
