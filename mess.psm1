@@ -163,6 +163,8 @@ function InitializeSpecialSystems([State] $state) {
             } elseif ($romType -eq "m5000") {
                 $state.ArgsToMame = ("bbcb", "-1mhzbus", "m5000", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
                 $state.RomArgIdx += 2
+            } elseif ($romType -eq "pro128s_flop") {
+                $state.ArgsToMame = ("pro128s", "-flop1") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
             }
 
             break
@@ -314,6 +316,11 @@ function InitializeSpecialSystems([State] $state) {
             } 
 
             break
+        }
+        "studio2" {
+            if ($romType -eq "visicom") {
+                $state.ArgsToMame = ("visicom", "-cart") + $state.ArgsToMame[2..($state.ArgsToMame.Length)]
+            }
         }
         "vectrex" {
             [string] $firstWordRomName = ($state.GetRomName() -split ' ')[0]
