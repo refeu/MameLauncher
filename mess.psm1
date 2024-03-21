@@ -346,9 +346,12 @@ function InitializeSoftwareListRom([State] $state) {
         return ""
     }
 
+    [bool] $hasSwitch = $true
+
     if ($state.ArgsToMame[1] -notlike "-*") {
         # The supposed switch is in fact a rom name...
-        $state.RomArgIdx = 1        
+        $state.RomArgIdx = 1
+        $hasSwitch = $false
     }
 
     if ((FileExt $state.GetRomPath()).ToLower() -ne ".zip") {
@@ -374,8 +377,20 @@ function InitializeSoftwareListRom([State] $state) {
 
         if ($romLinkName -ne "") {
             CreateSymbolicLink (Join-Path $Settings.TemporaryRomsDirectory "$romLinkName.zip") $state.GetRomPath()
-            $state.ArgsToMame = $state.ArgsToMame[0..($state.romArgIdx - 2)] + $romLinkName + $state.ArgsToMame[($state.romArgIdx + 1)..($state.ArgsToMame.Length)]
-            $state.romArgIdx -= 1
+            [int] $lastArgumentBeforeRomLink = 0
+
+            if ($hasSwitch) {
+                $lastArgumentBeforeRomLink = $state.romArgIdx - 2
+            } else {
+                $lastArgumentBeforeRomLink = $state.romArgIdx - 1
+            }
+
+            $state.ArgsToMame = $state.ArgsToMame[0..$lastArgumentBeforeRomLink] + $romLinkName + $state.ArgsToMame[($state.romArgIdx + 1)..($state.ArgsToMame.Length)]
+
+            if ($hasSwitch) {
+                $state.RomArgIdx -= 1
+            }
+
             return $romLinkName
         }
     }
